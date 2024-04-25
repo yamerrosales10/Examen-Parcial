@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interfaz de Login</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    form {
+        max-width: 300px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+    button {
+        width: 100%;
+        background-color: #4caf50;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    #dashboard {
+        display: none;
+    }
+    #logout {
+        margin-top: 20px;
+    }
+    .list {
+        width: 45%;
+        float: left;
+        margin-right: 5%;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    li {
+        padding: 10px;
+        margin-bottom: 5px;
+        background-color: #f2f2f2;
+        border-radius: 3px;
+    }
+</style>
+</head>
+<body>
+<div id="login">
+    <form id="loginForm">
+        <h2>Iniciar sesión</h2>
+        <input type="text" id="username" placeholder="Usuario" required>
+        <input type="password" id="password" placeholder="Contraseña" required>
+        <button type="submit">Iniciar sesión</button>
+    </form>
+</div>
+<div id="dashboard">
+    <h2>Bienvenido al Dashboard</h2>
+    <button id="logout">Salir</button>
+    <div class="list">
+        <h3>Lista 1</h3>
+        <ul id="list1">
+            <!-- Esta lista será llenada con elementos desde JavaScript -->
+        </ul>
+    </div>
+    <div class="list">
+        <h3>Lista 2</h3>
+        <ul id="list2">
+            <!-- Esta lista será llenada con elementos desde JavaScript -->
+        </ul>
+    </div>
+</div>
+
+<script>
+    const loginForm = document.getElementById('loginForm');
+    const dashboard = document.getElementById('dashboard');
+    const logoutBtn = document.getElementById('logout');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const list1 = document.getElementById('list1');
+    const list2 = document.getElementById('list2');
+
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+
+        // Aquí deberías hacer la validación del usuario y contraseña.
+        // Por simplicidad, asumimos que el usuario y contraseña son correctos.
+        // Si son correctos, mostramos el dashboard y guardamos la sesión en LocalStorage.
+
+        // Simulamos una sesión válida
+        const user = {
+            username: username,
+            // Puedes agregar más datos del usuario si lo necesitas
+        };
+        localStorage.setItem('SESION', JSON.stringify(user));
+
+        showDashboard();
+    });
+
+    logoutBtn.addEventListener('click', function() {
+        // Al hacer clic en el botón de salir, eliminamos la sesión del LocalStorage y volvemos a la pantalla de inicio de sesión.
+        localStorage.removeItem('SESION');
+        showLogin();
+    });
+
+    function showLogin() {
+        loginForm.reset();
+        dashboard.style.display = 'none';
+        document.getElementById('login').style.display = 'block';
+    }
+
+    function showDashboard() {
+        const user = JSON.parse(localStorage.getItem('SESION'));
+        if (user) {
+            // Aquí podrías cargar los datos necesarios para las listas del dashboard.
+            // Por simplicidad, agregamos algunos elementos de ejemplo.
+            list1.innerHTML = '';
+            list2.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                list1.innerHTML += `<li>Elemento ${i} de Lista 1</li>`;
+                list2.innerHTML += `<li>Elemento ${i} de Lista 2</li>`;
+            }
+            document.getElementById('login').style.display = 'none';
+            dashboard.style.display = 'block';
+        } else {
+            showLogin();
+        }
+    }
+
+    // Al cargar la página, verificamos si hay una sesión activa.
+    showDashboard();
+</script>
+</body>
+</html>
